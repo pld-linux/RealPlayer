@@ -7,8 +7,8 @@ Release:	2
 License:	Helix DNA Technology Binary Research Use License (not distributable, see LICENSE)
 Group:		X11/Applications/Multimedia
 URL:		http://www.real.com/
-Source0:	http://software-dl.real.com/06c1f73fd206f3264217/unix/%{name}%{version}GOLD.bin
-# NoSource0-md5:	1e6435241bfb0ea6c015ec717fbf141a
+Source0:	http://software-dl.real.com/1674f6a731a2dab6e018/unix/%{name}%{version}GOLD.bin
+# Source0-md5:	a2f2a14680df6439cf37d099f5739e8e
 Conflicts:	realplayer
 Obsoletes:	G2player
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
