@@ -1,9 +1,3 @@
-# TODO:
-# - realplayer 10 for ppc
-#   https://helixcommunity.org/project/showfiles.php?group_id=154&release_id=356
-#   i.e.
-#   https://helixcommunity.org/download.php/805/realplay-10.0.2.608-linux-2.2-libc6-gcc32-powerpc.bin
-#
 %define		_name	realplay
 Summary:	RealPlayer - RealAudio and RealVideo player
 Summary(pl):	RealPlayer - odtwarzacz RealAudio i RealVideo
@@ -12,16 +6,24 @@ Version:	10.0.3
 Release:	1
 License:	Helix DNA Technology Binary Research Use License (not distributable, see LICENSE)
 Group:		X11/Applications/Multimedia
+# download from https://helixcommunity.org/project/showfiles.php?group_id=154
+%ifarch %{ix86}
 Source0:	https://helixcommunity.org/download.php/964/%{name}-%{version}.748-20050223.i586.rpm
 # NoSource0-md5:	cea221a981b26c27e6e50a58aa285011
 NoSource:	0
+%endif
+%ifarch ppc
+Source1:	https://helixcommunity.org/download.php/973/realplay-%{version}.748-linux-2.2-powerpc.bin
+# NoSource1-md5:	f7ab7ddb4f7f53df0f16445c6df4caa2
+NoSource:	1
+%endif
 URL:		http://www.real.com/
 BuildRequires:	cpio
 BuildRequires:	sed >= 4.0
 Requires:	sed >= 4.0
 Obsoletes:	G2player
 Conflicts:	realplayer
-ExclusiveArch:	%{ix86} 
+ExclusiveArch:	%{ix86} ppc
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -71,8 +73,13 @@ Dane MIME oraz wpisy do rejestru aplikacji dla GNOME.
 
 %prep
 %setup -q -c -T
+%ifarch %{ix86}
 rpm2cpio %{SOURCE0} | cpio -dimu
 mv -f usr/local/RealPlayer/* .
+%endif
+%ifarch ppc
+dd if=%{SOURCE1} skip=158895 | tar xjf -
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
