@@ -1,6 +1,8 @@
 # TODO:
-# - realplayer 10 for ppc, sparc and alpha
+# - realplayer 10 for ppc
 #   https://helixcommunity.org/project/showfiles.php?group_id=154&release_id=356
+#   i.e.
+#   https://helixcommunity.org/download.php/805/realplay-10.0.2.608-linux-2.2-libc6-gcc32-powerpc.bin
 #
 %define		_name	realplay
 Summary:	RealPlayer - RealAudio and RealVideo player
