@@ -143,7 +143,8 @@ install share/*.css $RPM_BUILD_ROOT%{_libdir}/%{_name}/share
 %{__sed} -i -e 's&#[ \t]*HELIX_LIBS[ \t]*=.*$&HELIX_LIBS=%{_libdir}/%{_name} ; export HELIX_LIBS&' \
 	$RPM_BUILD_ROOT%{_libdir}/realplay/realplay
 
-%find_lang player
+# "player" and "widget" domains
+%find_lang %{name} --all-name
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -156,19 +157,18 @@ umask 022
 umask 022
 [ ! -x /usr/bin/update-desktop-database ] || /usr/bin/update-desktop-database >/dev/null 2>&1
 
-%files -f player.lang
+%files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc LICENSE README 
 %attr(755,root,root) %{_bindir}/realplay
 %dir %{_libdir}/%{_name}
 %dir %{_libdir}/%{_name}/codecs
-%dir %{_libdir}/%{_name}/common
-%dir %{_libdir}/%{_name}/lib
-%dir %{_libdir}/%{_name}/plugins
-
 %attr(755,root,root) %{_libdir}/%{_name}/codecs/*.so*
+%dir %{_libdir}/%{_name}/common
 %attr(755,root,root) %{_libdir}/%{_name}/common/*.so*
+%dir %{_libdir}/%{_name}/lib
 %attr(755,root,root) %{_libdir}/%{_name}/lib/*.so*
+%dir %{_libdir}/%{_name}/plugins
 %attr(755,root,root) %{_libdir}/%{_name}/plugins/*.so*
 %attr(755,root,root) %{_libdir}/%{_name}/realplay
 %attr(755,root,root) %{_libdir}/%{_name}/realplay.bin
@@ -180,13 +180,15 @@ umask 022
 
 %files gnome
 %defattr(644,root,root,755)
-%{_datadir}/application-registry
-%{_datadir}/mime-info
+%{_datadir}/application-registry/*.applications
+%{_datadir}/mime-info/*
 
 %files -n mozilla-plugin-%{name}
 %defattr(644,root,root,755)
-%{_libdir}/mozilla/plugins/*
+%attr(755,root,root) %{_libdir}/mozilla/plugins/*.so
+%{_libdir}/mozilla/plugins/*.xpt
 
 %files -n mozilla-firefox-plugin-%{name}
 %defattr(644,root,root,755)
-%{_libdir}/mozilla-firefox/plugins/*
+%attr(755,root,root) %{_libdir}/mozilla-firefox/plugins/*.so
+%{_libdir}/mozilla-firefox/plugins/*.xpt
