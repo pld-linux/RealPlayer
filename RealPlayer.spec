@@ -132,6 +132,8 @@ install -d $RPM_BUILD_ROOT%{_libdir}/%{_name}/share/default
 install share/default/* $RPM_BUILD_ROOT%{_libdir}/%{_name}/share/default
 install share/*.html $RPM_BUILD_ROOT%{_libdir}/%{_name}/share
 install share/*.css $RPM_BUILD_ROOT%{_libdir}/%{_name}/share
+%{__sed} -i -e "s%#[ \t]*HELIX_LIBS[ \t]*=.*$%HELIX_LIBS=%{_libdir}/%{_name} ; export HELIX_LIBS%" \
+	$RPM_BUILD_ROOT%{_libdir}/realplay
 
 %find_lang realplay
 
