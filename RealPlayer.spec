@@ -63,7 +63,7 @@ Summary:	GNOME data for Realplayer
 Summary(pl):	Dane Realplayera dla GNOME
 Group:		X11/Applications/Multimedia
 Requires:	%{name} = %{version}-%{release}
-Requires:	gnome-libs
+Requires:	gnome-mime-data
 
 %description gnome
 Mime information and application registry data for GNOME.
