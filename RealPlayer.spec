@@ -6,14 +6,14 @@ Version:	10
 Release:	2
 License:	Helix DNA Technology Binary Research Use License (not distributable, see LICENSE)
 Group:		X11/Applications/Multimedia
-URL:		http://www.real.com/
 Source0:	http://software-dl.real.com/1674f6a731a2dab6e018/unix/%{name}%{version}GOLD.bin
-# Source0-md5:	a2f2a14680df6439cf37d099f5739e8e
-Conflicts:	realplayer
-Obsoletes:	G2player
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+# NoSource0-md5: a2f2a14680df6439cf37d099f5739e8e
 NoSource:	0
+URL:		http://www.real.com/
+Obsoletes:	G2player
+Conflicts:	realplayer
 ExclusiveArch:	%{ix86} 
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Streaming audio/video/flash/pix/text player.
@@ -25,8 +25,8 @@ Odtwarzacz strumieni audio/video/flash/pix/tekst.
 Summary:	RealPlayer Mozilla plugin
 Summary(pl):	Wtyczka Mozilli RealPlayer
 Group:		X11/Applications/Multimedia
-Requires:	%{name} = %{version}
-Prereq:		mozilla-embedded
+PreReq:		mozilla-embedded
+Requires:	%{name} = %{version}-%{release}
 
 %description -n mozilla-plugin-%{name}
 RealPlayer Mozilla plugin
@@ -38,8 +38,8 @@ Wtyczka Mozilli RealPlayer
 Summary:	RealPlayer Mozilla Firefox plugin
 Summary(pl):	Wtyczka Mozilli Firefox RealPlayer
 Group:		X11/Applications/Multimedia
-Requires:	%{name} = %{version}
-Prereq:		mozilla-firefox
+PreReq:		mozilla-firefox
+Requires:	%{name} = %{version}-%{release}
 
 %description -n mozilla-firefox-plugin-%{name}
 RealPlayer Mozilla plugin
@@ -51,7 +51,7 @@ Wtyczka Mozilli RealPlayer
 Summary:	GNOME data for Realplayer
 Summary(pl):	Dane Realplayera dla GNOME
 Group:		X11/Applications/Multimedia
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 Requires:	gnome-libs
 
 %description gnome
@@ -59,7 +59,6 @@ Mime information and application registry data for GNOME.
 
 %description gnome -l pl
 Dane MIME oraz wpisy do rejestru aplikacji dla GNOME.
-
 
 %prep
 %setup -q -c -T
