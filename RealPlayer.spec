@@ -78,7 +78,7 @@ rpm2cpio %{SOURCE0} | cpio -dimu
 mv -f usr/local/RealPlayer/* .
 %endif
 %ifarch ppc
-dd if=%{SOURCE1} skip=158895 | tar xjf -
+dd if=%{SOURCE1} bs=1 skip=158895 | tar xjf -
 %endif
 
 %install
