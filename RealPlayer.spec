@@ -3,7 +3,7 @@ Summary:	Welcome to RealPlayer 10!
 Summary(pl):	RealPlayer - odtwarzacz RealAudio i RealVideo
 Name:		RealPlayer
 Version:	10
-Release:	1
+Release:	2
 License:	Helix DNA Technology Binary Research Use License (not distributable, see LICENSE)
 Group:		X11/Applications/Multimedia
 URL:		http://www.real.com/
@@ -125,15 +125,15 @@ install share/realplay.mime $RPM_BUILD_ROOT%{_datadir}/mime-info
 install share/realplay.keys $RPM_BUILD_ROOT%{_datadir}/mime-info
 
 install share/realplay.desktop $RPM_BUILD_ROOT%{_desktopdir}
-cp -a share/realplay $RPM_BUILD_ROOT%{_datadir}
 
-install -d $RPM_BUILD_ROOT%{_libdir}/%{_name}/share/default
+install -d $RPM_BUILD_ROOT%{_libdir}/%{_name}/share/{default,realplay}
 
+install share/realplay/* $RPM_BUILD_ROOT%{_libdir}/%{_name}/share/realplay
 install share/default/* $RPM_BUILD_ROOT%{_libdir}/%{_name}/share/default
 install share/*.html $RPM_BUILD_ROOT%{_libdir}/%{_name}/share
 install share/*.css $RPM_BUILD_ROOT%{_libdir}/%{_name}/share
 %{__sed} -i -e 's&#[ \t]*HELIX_LIBS[ \t]*=.*$&HELIX_LIBS=%{_libdir}/%{_name} ; export HELIX_LIBS&' \
-	$RPM_BUILD_ROOT%{_libdir}/realplay
+	$RPM_BUILD_ROOT%{_libdir}/realplay/realplay
 
 %find_lang realplay
 
@@ -154,9 +154,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{_name}/common/*.so*
 %attr(755,root,root) %{_libdir}/%{_name}/lib/*.so*
 %attr(755,root,root) %{_libdir}/%{_name}/plugins/*.so*
-%attr(755,root,root) %{_libdir}/%{_name}/realplay*
+%attr(755,root,root) %{_libdir}/%{_name}/realplay
+%attr(755,root,root) %{_libdir}/%{_name}/realplay.bin
+
 %{_libdir}/%{_name}/share
-%{_datadir}/%{_name}
+
 %{_iconsdir}/hicolor/*/*/*.png
 %{_desktopdir}/*.desktop
 
