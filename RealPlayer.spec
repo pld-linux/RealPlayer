@@ -3,7 +3,7 @@
 #   https://helixcommunity.org/project/showfiles.php?group_id=154&release_id=356
 #
 %define		_name	realplay
-Summary:	Welcome to RealPlayer 10!
+Summary:	RealPlayer - RealAudio and RealVideo player
 Summary(pl):	RealPlayer - odtwarzacz RealAudio i RealVideo
 Name:		RealPlayer
 Version:	10.0.2
@@ -121,8 +121,8 @@ cd -
 
 cp -rf share/locale/* $RPM_BUILD_ROOT%{_datadir}/locale
 
-install mozilla/*.so $RPM_BUILD_ROOT%{_libdir}/mozilla/plugins
-install mozilla/*.so $RPM_BUILD_ROOT%{_libdir}/mozilla-firefox/plugins
+install mozilla/*.{so,xpt} $RPM_BUILD_ROOT%{_libdir}/mozilla/plugins
+install mozilla/*.{so,xpt} $RPM_BUILD_ROOT%{_libdir}/mozilla-firefox/plugins
 
 install realplay* $RPM_BUILD_ROOT%{_libdir}/%{_name}
 ln -sf ../lib/%{_name}/realplay $RPM_BUILD_ROOT%{_bindir}/realplay
