@@ -15,6 +15,7 @@ Source0:	http://software-dl.real.com/1674f6a731a2dab6e018/unix/%{name}%{version}
 # NoSource0-md5: a2f2a14680df6439cf37d099f5739e8e
 NoSource:	0
 URL:		http://www.real.com/
+BuildRequires:	sed >= 4.0
 Obsoletes:	G2player
 Conflicts:	realplayer
 ExclusiveArch:	%{ix86} 
