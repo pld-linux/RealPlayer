@@ -140,6 +140,14 @@ install share/*.css $RPM_BUILD_ROOT%{_libdir}/%{_name}/share
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post
+umask 022
+[ ! -x /usr/bin/update-desktop-database ] || /usr/bin/update-desktop-database >/dev/null 2>&1 ||:
+
+%postun
+umask 022
+[ ! -x /usr/bin/update-desktop-database ] || /usr/bin/update-desktop-database >/dev/null 2>&1
+
 %files -f realplay.lang
 %defattr(644,root,root,755)
 %doc LICENSE README 
