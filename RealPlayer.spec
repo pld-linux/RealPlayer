@@ -35,11 +35,11 @@ RealPlayer Mozilla plugin
 Wtyczka Mozilli RealPlayer
 
 %package -n mozilla-firefox-plugin-%{name}
-Summary:        RealPlayer Mozilla Firefox plugin
-Summary(pl):    Wtyczka Mozilli Firefox RealPlayer
-Group:          X11/Applications/Multimedia
-Requires:       %{name} = %{version}
-Prereq:         mozilla-firefox
+Summary:	RealPlayer Mozilla Firefox plugin
+Summary(pl):	Wtyczka Mozilli Firefox RealPlayer
+Group:		X11/Applications/Multimedia
+Requires:	%{name} = %{version}
+Prereq:		mozilla-firefox
 
 %description -n mozilla-firefox-plugin-%{name}
 RealPlayer Mozilla plugin
@@ -117,7 +117,7 @@ install share/locale/fr.mo $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/real
 install mozilla/*.so $RPM_BUILD_ROOT%{_libdir}/mozilla/plugins
 install mozilla/*.so $RPM_BUILD_ROOT%{_libdir}/mozilla-firefox/plugins
 
-install realplay*  $RPM_BUILD_ROOT%{_libdir}/%{_name}
+install realplay* $RPM_BUILD_ROOT%{_libdir}/%{_name}
 ln -sf ../lib/%{_name}/realplay $RPM_BUILD_ROOT%{_bindir}/realplay
 
 install share/realplay.applications $RPM_BUILD_ROOT%{_datadir}/application-registry
