@@ -2,20 +2,21 @@
 # - realplayer 10 for ppc, sparc and alpha
 #   https://helixcommunity.org/project/showfiles.php?group_id=154&release_id=356
 #
-
 %define		_name	realplay
 Summary:	Welcome to RealPlayer 10!
 Summary(pl):	RealPlayer - odtwarzacz RealAudio i RealVideo
 Name:		RealPlayer
-Version:	10
-Release:	2
+Version:	10.0.2
+Release:	1
 License:	Helix DNA Technology Binary Research Use License (not distributable, see LICENSE)
 Group:		X11/Applications/Multimedia
-Source0:	http://software-dl.real.com/1674f6a731a2dab6e018/unix/%{name}%{version}GOLD.bin
-# NoSource0-md5: a2f2a14680df6439cf37d099f5739e8e
+Source0:	https://helixcommunity.org/download.php/801/%{name}%{version}.608-20041214.i586.rpm
+# NoSource0-md5:	18a7085f0f5a09c82202b4a080c92dac
 NoSource:	0
 URL:		http://www.real.com/
+BuildRequires:	cpio
 BuildRequires:	sed >= 4.0
+Requires:	sed >= 4.0
 Obsoletes:	G2player
 Conflicts:	realplayer
 ExclusiveArch:	%{ix86} 
@@ -68,18 +69,19 @@ Dane MIME oraz wpisy do rejestru aplikacji dla GNOME.
 
 %prep
 %setup -q -c -T
-dd if=%{SOURCE0} skip=1 bs=129460| %{__bzip2} -d | %{__tar} xvf -
+rpm2cpio %{SOURCE0} | cpio -dimu
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_desktopdir} \
 	$RPM_BUILD_ROOT%{_libdir}/mozilla/plugins \
 	$RPM_BUILD_ROOT%{_libdir}/mozilla-firefox/plugins \
-	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{_name},%{_datadir}/{locale}} \
+	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{_name},%{_datadir}/locale} \
 	$RPM_BUILD_ROOT%{_iconsdir}/hicolor/{48x48,128x128}/mimetypes \
 	$RPM_BUILD_ROOT%{_iconsdir}/hicolor/{16x16,32x32,48x48,128x128}/apps \
-	$RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES \
 	$RPM_BUILD_ROOT%{_datadir}/{application-registry,mime-info}
+
+mv -f usr/local/RealPlayer/* .
 
 cp -a codecs common plugins lib $RPM_BUILD_ROOT%{_libdir}/%{_name}
 
@@ -117,7 +119,7 @@ install realplay_48x48.png $RPM_BUILD_ROOT%{_iconsdir}/hicolor/48x48/apps/realpl
 install realplay_192x192.png $RPM_BUILD_ROOT%{_iconsdir}/hicolor/128x128/apps/realplay.png
 cd -
 
-install share/locale/fr.mo $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/realplay.mo
+cp -rf share/locale/* $RPM_BUILD_ROOT%{_datadir}/locale
 
 install mozilla/*.so $RPM_BUILD_ROOT%{_libdir}/mozilla/plugins
 install mozilla/*.so $RPM_BUILD_ROOT%{_libdir}/mozilla-firefox/plugins
@@ -140,7 +142,7 @@ install share/*.css $RPM_BUILD_ROOT%{_libdir}/%{_name}/share
 %{__sed} -i -e 's&#[ \t]*HELIX_LIBS[ \t]*=.*$&HELIX_LIBS=%{_libdir}/%{_name} ; export HELIX_LIBS&' \
 	$RPM_BUILD_ROOT%{_libdir}/realplay/realplay
 
-%find_lang realplay
+%find_lang player
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -153,7 +155,7 @@ umask 022
 umask 022
 [ ! -x /usr/bin/update-desktop-database ] || /usr/bin/update-desktop-database >/dev/null 2>&1
 
-%files -f realplay.lang
+%files -f player.lang
 %defattr(644,root,root,755)
 %doc LICENSE README 
 %attr(755,root,root) %{_bindir}/realplay
