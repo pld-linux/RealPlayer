@@ -1,3 +1,8 @@
+# TODO:
+# - realplayer 10 for ppc, sparc and alpha
+#   https://helixcommunity.org/project/showfiles.php?group_id=154&release_id=356
+#
+
 %define		_name	realplay
 Summary:	Welcome to RealPlayer 10!
 Summary(pl):	RealPlayer - odtwarzacz RealAudio i RealVideo
