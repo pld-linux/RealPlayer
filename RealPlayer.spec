@@ -70,6 +70,7 @@ Dane MIME oraz wpisy do rejestru aplikacji dla GNOME.
 %prep
 %setup -q -c -T
 rpm2cpio %{SOURCE0} | cpio -dimu
+mv -f usr/local/RealPlayer/* .
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -80,8 +81,6 @@ install -d $RPM_BUILD_ROOT%{_desktopdir} \
 	$RPM_BUILD_ROOT%{_iconsdir}/hicolor/{48x48,128x128}/mimetypes \
 	$RPM_BUILD_ROOT%{_iconsdir}/hicolor/{16x16,32x32,48x48,128x128}/apps \
 	$RPM_BUILD_ROOT%{_datadir}/{application-registry,mime-info}
-
-mv -f usr/local/RealPlayer/* .
 
 cp -a codecs common plugins lib $RPM_BUILD_ROOT%{_libdir}/%{_name}
 
