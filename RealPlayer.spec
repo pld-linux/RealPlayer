@@ -2,19 +2,19 @@
 Summary:	RealPlayer - RealAudio and RealVideo player
 Summary(pl):	RealPlayer - odtwarzacz RealAudio i RealVideo
 Name:		RealPlayer
-Version:	10.0.3
+Version:	10.0.4
 Release:	1
 License:	Helix DNA Technology Binary Research Use License (not distributable, see LICENSE)
 Group:		X11/Applications/Multimedia
 # download from https://helixcommunity.org/project/showfiles.php?group_id=154
 %ifarch %{ix86}
-Source0:	https://helixcommunity.org/download.php/964/%{name}-%{version}.748-20050223.i586.rpm
-# NoSource0-md5:	cea221a981b26c27e6e50a58aa285011
+Source0:	https://helixcommunity.org/download.php/1145/%{name}-%{version}.750-20050401.i586.rpm
+# NoSource0-md5:	bd072df4b53b81099dfc5e0617bebeb4
 NoSource:	0
 %endif
 %ifarch ppc
-Source1:	https://helixcommunity.org/download.php/973/realplay-%{version}.748-linux-2.2-powerpc.bin
-# NoSource1-md5:	f7ab7ddb4f7f53df0f16445c6df4caa2
+Source1:	https://helixcommunity.org/download.php/1147/realplay-%{version}.750-linux-2.2-libc6-gcc32-powerpc.bin
+# NoSource1-md5:	73ba2410e6a6c1d6e76b493419736c93
 NoSource:	1
 %endif
 URL:		http://www.real.com/
