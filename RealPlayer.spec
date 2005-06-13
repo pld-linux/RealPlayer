@@ -3,7 +3,7 @@ Summary:	RealPlayer - RealAudio and RealVideo player
 Summary(pl):	RealPlayer - odtwarzacz RealAudio i RealVideo
 Name:		RealPlayer
 Version:	10.0.4
-Release:	1
+Release:	2
 License:	Helix DNA Technology Binary Research Use License (not distributable, see LICENSE)
 Group:		X11/Applications/Multimedia
 # download from https://helixcommunity.org/project/showfiles.php?group_id=154
@@ -22,6 +22,7 @@ BuildRequires:	cpio
 BuildRequires:	sed >= 4.0
 Requires:	sed >= 4.0
 Obsoletes:	G2player
+Obsoletes:	RealPlayer-gnome
 Conflicts:	realplayer
 ExclusiveArch:	%{ix86} ppc
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -58,19 +59,6 @@ RealPlayer Mozilla plugin
 %description -n mozilla-firefox-plugin-%{name} -l pl
 Wtyczka Mozilli RealPlayer
 
-%package gnome
-Summary:	GNOME data for Realplayer
-Summary(pl):	Dane Realplayera dla GNOME
-Group:		X11/Applications/Multimedia
-Requires:	%{name} = %{version}-%{release}
-Requires:	gnome-mime-data
-
-%description gnome
-Mime information and application registry data for GNOME.
-
-%description gnome -l pl
-Dane MIME oraz wpisy do rejestru aplikacji dla GNOME.
-
 %prep
 %setup -q -c -T
 %ifarch %{ix86}
@@ -88,8 +76,7 @@ install -d $RPM_BUILD_ROOT%{_desktopdir} \
 	$RPM_BUILD_ROOT%{_libdir}/mozilla-firefox/plugins \
 	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{_name},%{_datadir}/locale} \
 	$RPM_BUILD_ROOT%{_iconsdir}/hicolor/{48x48,128x128}/mimetypes \
-	$RPM_BUILD_ROOT%{_iconsdir}/hicolor/{16x16,32x32,48x48,128x128}/apps \
-	$RPM_BUILD_ROOT%{_datadir}/{application-registry,mime-info}
+	$RPM_BUILD_ROOT%{_iconsdir}/hicolor/{16x16,32x32,48x48,128x128}/apps
 
 cp -a codecs common plugins lib $RPM_BUILD_ROOT%{_libdir}/%{_name}
 
@@ -134,10 +121,6 @@ install mozilla/*.{so,xpt} $RPM_BUILD_ROOT%{_libdir}/mozilla-firefox/plugins
 
 install realplay* $RPM_BUILD_ROOT%{_libdir}/%{_name}
 ln -sf ../lib/%{_name}/realplay $RPM_BUILD_ROOT%{_bindir}/realplay
-
-install share/realplay.applications $RPM_BUILD_ROOT%{_datadir}/application-registry
-install share/realplay.mime $RPM_BUILD_ROOT%{_datadir}/mime-info
-install share/realplay.keys $RPM_BUILD_ROOT%{_datadir}/mime-info
 
 install share/realplay.desktop $RPM_BUILD_ROOT%{_desktopdir}
 
@@ -184,11 +167,6 @@ umask 022
 
 %{_iconsdir}/hicolor/*/*/*.png
 %{_desktopdir}/*.desktop
-
-%files gnome
-%defattr(644,root,root,755)
-%{_datadir}/application-registry/*.applications
-%{_datadir}/mime-info/*
 
 %files -n mozilla-plugin-%{name}
 %defattr(644,root,root,755)
