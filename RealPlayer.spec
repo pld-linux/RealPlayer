@@ -1,19 +1,30 @@
+#
+# Todo:
+#	- update the ppc md5sum (!)
+#	- replace mozilla-* plugins with browser-plugins
+#	- add the licence agreement mechanism
+#
 %define		_name	realplay
 Summary:	RealPlayer - RealAudio and RealVideo player
 Summary(pl):	RealPlayer - odtwarzacz RealAudio i RealVideo
 Name:		RealPlayer
-Version:	10.0.4
-Release:	2
+%ifarch	%{ix86}
+%define		minor_ver	6
+%else
+%define		minor_ver	5
+%endif
+Version:	10.0.%{minor_ver}
+Release:	0.1
 License:	Helix DNA Technology Binary Research Use License (not distributable, see LICENSE)
 Group:		X11/Applications/Multimedia
 # download from https://helixcommunity.org/project/showfiles.php?group_id=154
 %ifarch %{ix86}
-Source0:	https://helixcommunity.org/download.php/1145/%{name}-%{version}.750-20050401.i586.rpm
-# NoSource0-md5:	bd072df4b53b81099dfc5e0617bebeb4
+Source0:	https://helixcommunity.org/download.php/1589/%{name}-%{version}.776-20050929.i586.rpm
+# NoSource0-md5:	870215a8ed4f50c76bbc42212511e8e7
 NoSource:	0
 %endif
 %ifarch ppc
-Source1:	https://helixcommunity.org/download.php/1147/realplay-%{version}.750-linux-2.2-libc6-gcc32-powerpc.bin
+Source1:	https://helixcommunity.org/download.php/1346/realplay-%{version}.756-linux-2.2-libc6-gcc32-powerpc.bin
 # NoSource1-md5:	73ba2410e6a6c1d6e76b493419736c93
 NoSource:	1
 %endif
@@ -130,6 +141,7 @@ install share/realplay/* $RPM_BUILD_ROOT%{_libdir}/%{_name}/share/realplay
 install share/default/* $RPM_BUILD_ROOT%{_libdir}/%{_name}/share/default
 install share/*.html $RPM_BUILD_ROOT%{_libdir}/%{_name}/share
 install share/*.css $RPM_BUILD_ROOT%{_libdir}/%{_name}/share
+
 %{__sed} -i -e 's&#[ \t]*HELIX_LIBS[ \t]*=.*$&HELIX_LIBS=%{_libdir}/%{_name} ; export HELIX_LIBS&' \
 	$RPM_BUILD_ROOT%{_libdir}/realplay/realplay
 
