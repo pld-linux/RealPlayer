@@ -1,6 +1,5 @@
 #
 # Todo:
-#	- update the ppc md5sum (!)
 #	- replace mozilla-* plugins with browser-plugins
 #	- add the licence agreement mechanism
 #
@@ -25,7 +24,7 @@ NoSource:	0
 %endif
 %ifarch ppc
 Source1:	https://helixcommunity.org/download.php/1346/realplay-%{version}.756-linux-2.2-libc6-gcc32-powerpc.bin
-# NoSource1-md5:	73ba2410e6a6c1d6e76b493419736c93
+# NoSource1-md5:	d87d35617f07ab9435341f37229dd3ae
 NoSource:	1
 %endif
 URL:		http://www.real.com/
