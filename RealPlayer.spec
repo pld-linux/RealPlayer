@@ -30,6 +30,7 @@ NoSource:	1
 URL:		http://www.real.com/
 BuildRequires:	cpio
 BuildRequires:	sed >= 4.0
+Provides:	helix-core
 Requires:	sed >= 4.0
 Obsoletes:	G2player
 Obsoletes:	RealPlayer-gnome
