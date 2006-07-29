@@ -1,6 +1,7 @@
 #
 # Todo:
 #	- add the licence agreement mechanism
+#	- check if this works in opera/konqueror
 #
 %define		_name	realplay
 Summary:	RealPlayer - RealAudio and RealVideo player
@@ -165,17 +166,17 @@ umask 022
 %triggerun -- mozilla
 %nsplugin_uninstall -d %{_libdir}/mozilla/plugins nphelix.so nphelix.xpt
 
-%triggerin -- konqueror
-%nsplugin_install -d %{_libdir}/kde3/plugins/konqueror nphelix.so
+#triggerin -- konqueror
+#nsplugin_install -d %{_libdir}/kde3/plugins/konqueror nphelix.so
 
-%triggerun -- konqueror
-%nsplugin_uninstall -d %{_libdir}/kde3/plugins/konqueror nphelix.so
+#triggerun -- konqueror
+#nsplugin_uninstall -d %{_libdir}/kde3/plugins/konqueror nphelix.so
 
-%triggerin -- opera
-%nsplugin_install -d %{_libdir}/opera/plugins nphelix.so
+#triggerin -- opera
+#nsplugin_install -d %{_libdir}/opera/plugins nphelix.so
 
-%triggerun -- opera
-%nsplugin_uninstall -d %{_libdir}/opera/plugins nphelix.so
+#triggerun -- opera
+#nsplugin_uninstall -d %{_libdir}/opera/plugins nphelix.so
 
 %triggerin -- seamonkey
 %nsplugin_install -d %{_libdir}/seamonkey/plugins nphelix.so nphelix.xpt
