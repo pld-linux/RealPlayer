@@ -18,7 +18,7 @@ License:	Helix DNA Technology Binary Research Use License (not distributable, se
 Group:		X11/Applications/Multimedia
 # download from https://helixcommunity.org/project/showfiles.php?group_id=154
 %ifarch %{ix86}
-Source0:	RealPlayer10GOLD.rpm
+Source0:	https://helixcommunity.org/download.php/1917/%{name}-%{version}.785-20060201.i586.rpm
 # NoSource0-md5:	3de2e377fd6f00ea1de8f3016469fe5e
 NoSource:	0
 %endif
