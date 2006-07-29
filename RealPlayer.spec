@@ -154,42 +154,42 @@ umask 022
 [ ! -x /usr/bin/update-desktop-database ] || /usr/bin/update-desktop-database >/dev/null 2>&1
 %update_icon_cache hicolor
 
-%triggerin -- mozilla-firefox
+%triggerin -n browser-plugin-%{name} -- mozilla-firefox
 %nsplugin_install -d %{_libdir}/mozilla-firefox/plugins nphelix.so nphelix.xpt
 
-%triggerun -- mozilla-firefox
+%triggerun -n browser-plugin-%{name} -- mozilla-firefox
 %nsplugin_uninstall -d %{_libdir}/mozilla-firefox/plugins nphelix.so nphelix.xpt
 
-%triggerin -- mozilla
+%triggerin -n browser-plugin-%{name} -- mozilla
 %nsplugin_install -d %{_libdir}/mozilla/plugins nphelix.so nphelix.xpt
 
-%triggerun -- mozilla
+%triggerun -n browser-plugin-%{name} -- mozilla
 %nsplugin_uninstall -d %{_libdir}/mozilla/plugins nphelix.so nphelix.xpt
 
-#triggerin -- konqueror
+#triggerin -n browser-plugin-%{name} -- konqueror
 #nsplugin_install -d %{_libdir}/kde3/plugins/konqueror nphelix.so
 
-#triggerun -- konqueror
+#triggerun -n browser-plugin-%{name} -- konqueror
 #nsplugin_uninstall -d %{_libdir}/kde3/plugins/konqueror nphelix.so
 
-#triggerin -- opera
+#triggerin -n browser-plugin-%{name} -- opera
 #nsplugin_install -d %{_libdir}/opera/plugins nphelix.so
 
-#triggerun -- opera
+#triggerun -n browser-plugin-%{name} -- opera
 #nsplugin_uninstall -d %{_libdir}/opera/plugins nphelix.so
 
-%triggerin -- seamonkey
+%triggerin -n browser-plugin-%{name} -- seamonkey
 %nsplugin_install -d %{_libdir}/seamonkey/plugins nphelix.so nphelix.xpt
 
-%triggerun -- seamonkey
+%triggerun -n browser-plugin-%{name} -- seamonkey
 %nsplugin_uninstall -d %{_libdir}/seamonkey/plugins nphelix.so nphelix.xpt
 
 # as rpm removes the old obsoleted package files after the triggers
 # above are ran, add another trigger to make the links there.
-%triggerpostun -- mozilla-firefox-plugin-macromedia-flash
+%triggerpostun -n browser-plugin-%{name} -- mozilla-firefox-plugin-RealPlaer
 %nsplugin_install -f -d %{_libdir}/mozilla-firefox/plugins nphelix.so nphelix.xpt
 
-%triggerpostun -- mozilla-plugin-macromedia-flash
+%triggerpostun -n browser-plugin-%{name} -- mozilla-plugin-RealPlayer
 %nsplugin_install -f -d %{_libdir}/mozilla/plugins nphelix.so nphelix.xpt
 
 %files -f %{name}.lang
