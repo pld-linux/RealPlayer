@@ -1,6 +1,5 @@
 #
 # Todo:
-#	- replace mozilla-* plugins with browser-plugins
 #	- add the licence agreement mechanism
 #
 %define		_name	realplay
@@ -8,18 +7,18 @@ Summary:	RealPlayer - RealAudio and RealVideo player
 Summary(pl):	RealPlayer - odtwarzacz RealAudio i RealVideo
 Name:		RealPlayer
 %ifarch	%{ix86}
-%define		minor_ver	6
+%define		minor_ver	7
 %else
 %define		minor_ver	5
 %endif
 Version:	10.0.%{minor_ver}
-Release:	0.1
+Release:	1
 License:	Helix DNA Technology Binary Research Use License (not distributable, see LICENSE)
 Group:		X11/Applications/Multimedia
 # download from https://helixcommunity.org/project/showfiles.php?group_id=154
 %ifarch %{ix86}
-Source0:	https://helixcommunity.org/download.php/1589/%{name}-%{version}.776-20050929.i586.rpm
-# NoSource0-md5:	870215a8ed4f50c76bbc42212511e8e7
+Source0:	RealPlayer10GOLD.rpm
+# NoSource0-md5:	3de2e377fd6f00ea1de8f3016469fe5e
 NoSource:	0
 %endif
 %ifarch ppc
@@ -27,8 +26,9 @@ Source1:	https://helixcommunity.org/download.php/1346/realplay-%{version}.756-li
 # NoSource1-md5:	d87d35617f07ab9435341f37229dd3ae
 NoSource:	1
 %endif
-URL:		http://www.real.com/
+URL:		http://www.real.com/linux/
 BuildRequires:	cpio
+BuildRequires:	rpmbuild(macros) >= 1.312
 BuildRequires:	sed >= 4.0
 Provides:	helix-core
 Requires:	sed >= 4.0
@@ -38,37 +38,31 @@ Conflicts:	realplayer
 ExclusiveArch:	%{ix86} ppc
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+%define		_plugindir	%{_libdir}/browser-plugins
+%define		browsers	mozilla, mozilla-firefox, netscape, seamonkey
+
 %description
 Streaming audio/video/flash/pix/text player.
 
 %description -l pl
 Odtwarzacz strumieni audio/video/flash/pix/tekst.
 
-%package -n mozilla-plugin-%{name}
-Summary:	RealPlayer Mozilla plugin
-Summary(pl):	Wtyczka Mozilli RealPlayer
+%package -n browser-plugin-%{name}
+Summary:	RealPlayer plugin for WWW browsers
+Summary(pl):	Wtyczka RealPlayer do przegl±darek WWW
 Group:		X11/Applications/Multimedia
-PreReq:		mozilla-embedded
 Requires:	%{name} = %{version}-%{release}
+Requires:	browser-plugins(%{_target_base_arch})
 
-%description -n mozilla-plugin-%{name}
-RealPlayer Mozilla plugin
+%description -n browser-plugin-%{name}
+RealPlayer plugin for WWW browsers.
 
-%description -n mozilla-plugin-%{name} -l pl
-Wtyczka Mozilli RealPlayer
+Supported browsers: %{browsers}.
 
-%package -n mozilla-firefox-plugin-%{name}
-Summary:	RealPlayer Mozilla Firefox plugin
-Summary(pl):	Wtyczka Mozilli Firefox RealPlayer
-Group:		X11/Applications/Multimedia
-PreReq:		mozilla-firefox
-Requires:	%{name} = %{version}-%{release}
+%description -n browser-plugin-%{name} -l pl
+Wtyczka RealPlayer dla przegl±darek WWW.
 
-%description -n mozilla-firefox-plugin-%{name}
-RealPlayer Mozilla plugin
-
-%description -n mozilla-firefox-plugin-%{name} -l pl
-Wtyczka Mozilli RealPlayer
+Obs³ugiwane przegl±darki: %{browsers}.
 
 %prep
 %setup -q -c -T
@@ -83,8 +77,7 @@ dd if=%{SOURCE1} bs=1 skip=158895 | tar xjf -
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_desktopdir} \
-	$RPM_BUILD_ROOT%{_libdir}/mozilla/plugins \
-	$RPM_BUILD_ROOT%{_libdir}/mozilla-firefox/plugins \
+	$RPM_BUILD_ROOT%{_plugindir} \
 	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{_name},%{_datadir}/locale} \
 	$RPM_BUILD_ROOT%{_iconsdir}/hicolor/{48x48,128x128}/mimetypes \
 	$RPM_BUILD_ROOT%{_iconsdir}/hicolor/{16x16,32x32,48x48,128x128}/apps
@@ -127,8 +120,7 @@ cd -
 
 cp -rf share/locale/* $RPM_BUILD_ROOT%{_datadir}/locale
 
-install mozilla/*.{so,xpt} $RPM_BUILD_ROOT%{_libdir}/mozilla/plugins
-install mozilla/*.{so,xpt} $RPM_BUILD_ROOT%{_libdir}/mozilla-firefox/plugins
+install mozilla/*.{so,xpt} $RPM_BUILD_ROOT%{_plugindir}
 
 install realplay* $RPM_BUILD_ROOT%{_libdir}/%{_name}
 ln -sf ../lib/%{_name}/realplay $RPM_BUILD_ROOT%{_bindir}/realplay
@@ -154,10 +146,50 @@ rm -rf $RPM_BUILD_ROOT
 %post
 umask 022
 [ ! -x /usr/bin/update-desktop-database ] || /usr/bin/update-desktop-database >/dev/null 2>&1 ||:
+%update_icon_cache hicolor
 
 %postun
 umask 022
 [ ! -x /usr/bin/update-desktop-database ] || /usr/bin/update-desktop-database >/dev/null 2>&1
+%update_icon_cache hicolor
+
+%triggerin -- mozilla-firefox
+%nsplugin_install -d %{_libdir}/mozilla-firefox/plugins nphelix.so nphelix.xpt
+
+%triggerun -- mozilla-firefox
+%nsplugin_uninstall -d %{_libdir}/mozilla-firefox/plugins nphelix.so nphelix.xpt
+
+%triggerin -- mozilla
+%nsplugin_install -d %{_libdir}/mozilla/plugins nphelix.so nphelix.xpt
+
+%triggerun -- mozilla
+%nsplugin_uninstall -d %{_libdir}/mozilla/plugins nphelix.so nphelix.xpt
+
+%triggerin -- konqueror
+%nsplugin_install -d %{_libdir}/kde3/plugins/konqueror nphelix.so
+
+%triggerun -- konqueror
+%nsplugin_uninstall -d %{_libdir}/kde3/plugins/konqueror nphelix.so
+
+%triggerin -- opera
+%nsplugin_install -d %{_libdir}/opera/plugins nphelix.so
+
+%triggerun -- opera
+%nsplugin_uninstall -d %{_libdir}/opera/plugins nphelix.so
+
+%triggerin -- seamonkey
+%nsplugin_install -d %{_libdir}/seamonkey/plugins nphelix.so nphelix.xpt
+
+%triggerun -- seamonkey
+%nsplugin_uninstall -d %{_libdir}/seamonkey/plugins nphelix.so nphelix.xpt
+
+# as rpm removes the old obsoleted package files after the triggers
+# above are ran, add another trigger to make the links there.
+%triggerpostun -- mozilla-firefox-plugin-macromedia-flash
+%nsplugin_install -f -d %{_libdir}/mozilla-firefox/plugins nphelix.so nphelix.xpt
+
+%triggerpostun -- mozilla-plugin-macromedia-flash
+%nsplugin_install -f -d %{_libdir}/mozilla/plugins nphelix.so nphelix.xpt
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
@@ -180,12 +212,7 @@ umask 022
 %{_iconsdir}/hicolor/*/*/*.png
 %{_desktopdir}/*.desktop
 
-%files -n mozilla-plugin-%{name}
+%files -n browser-plugin-%{name}
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/mozilla/plugins/*.so
-%{_libdir}/mozilla/plugins/*.xpt
-
-%files -n mozilla-firefox-plugin-%{name}
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/mozilla-firefox/plugins/*.so
-%{_libdir}/mozilla-firefox/plugins/*.xpt
+%attr(755,root,root) %{_plugindir}/*.so
+%{_plugindir}/*.xpt
