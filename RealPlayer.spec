@@ -1,7 +1,7 @@
 # TODO:
 #	- add the licence agreement mechanism
 #	- check if this works in opera/konqueror
-#   - merge with helixplayer.spec
+#   - merge with realplayer.spec
 #
 %define		_name	realplay
 Summary:	RealPlayer - RealAudio and RealVideo player
