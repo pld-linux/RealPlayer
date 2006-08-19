@@ -1,7 +1,10 @@
 # TODO:
 #	- add the licence agreement mechanism
 #	- check if this works in opera/konqueror
-#   - merge with realplayer.spec
+#   - check if realplayer-desktop.patch (from realplayer.spec) is needed
+#
+# Conditional build:
+%bcond_without	autodeps	# don't BR packages needed only for resolving deps
 #
 %define		_name	realplay
 Summary:	RealPlayer - RealAudio and RealVideo player
@@ -27,26 +30,45 @@ Source1:	https://helixcommunity.org/download.php/1346/realplay-%{version}.756-li
 # NoSource1-md5:	d87d35617f07ab9435341f37229dd3ae
 NoSource:	1
 %endif
+Patch0:		realplayer-desktop.patch
 URL:		http://www.real.com/linux/
 BuildRequires:	cpio
 BuildRequires:	rpmbuild(macros) >= 1.312
 BuildRequires:	sed >= 4.0
-Provides:	helix-core
+%if %{with autodeps}
+BuildRequires:	atk
+BuildRequires:	glib2
+BuildRequires:	gtk+2
+BuildRequires:	libgcc
+BuildRequires:	libstdc++
+BuildRequires:	pango
+%endif
 Requires:	sed >= 4.0
+Provides:	helix-core
 Obsoletes:	G2player
 Obsoletes:	RealPlayer-gnome
-Conflicts:	realplayer
+Obsoletes:	realplayer
 ExclusiveArch:	%{ix86} ppc
+ExcludeArch:	i386 i486
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_plugindir	%{_libdir}/browser-plugins
 %define		browsers	mozilla, mozilla-firefox, netscape, seamonkey
+%define		_noautocompressdoc  LICENSE README
 
 %description
 Streaming audio/video/flash/pix/text player.
+%ifarch ppc
+
+WARNING: this package is vulnerable - see CVE-2006-0323!
+%endif
 
 %description -l pl
 Odtwarzacz strumieni audio/video/flash/pix/tekst.
+%ifarch ppc
+
+UWAGA: ten pakiet jest niebezpieczny - szczegó³y w CVE-2006-0323!
+%endif
 
 %package -n browser-plugin-%{name}
 Summary:	RealPlayer plugin for WWW browsers
@@ -120,11 +142,19 @@ install realplay_192x192.png $RPM_BUILD_ROOT%{_iconsdir}/hicolor/128x128/apps/re
 cd -
 
 cp -rf share/locale/* $RPM_BUILD_ROOT%{_datadir}/locale
+# from realplayer.spec - does it work???
+#cd share/locale
+#for LC in *; do
+#	install -d $RPM_BUILD_ROOT%{_datadir}/locale/${LC}/LC_MESSAGES
+#	cp -a ${LC}/player.mo $RPM_BUILD_ROOT%{_datadir}/locale/${LC}/LC_MESSAGES/realplay.mo
+#	cp -a ${LC}/widget.mo $RPM_BUILD_ROOT%{_datadir}/locale/${LC}/LC_MESSAGES/libgtkhx.mo
+#done
+#cd ../..
 
 install mozilla/*.{so,xpt} $RPM_BUILD_ROOT%{_plugindir}
 
 install realplay* $RPM_BUILD_ROOT%{_libdir}/%{_name}
-ln -sf ../lib/%{_name}/realplay $RPM_BUILD_ROOT%{_bindir}/realplay
+ln -sf ../%{_lib}/%{_name}/realplay $RPM_BUILD_ROOT%{_bindir}/realplay
 
 install share/realplay.desktop $RPM_BUILD_ROOT%{_desktopdir}
 
@@ -134,6 +164,10 @@ install share/realplay/* $RPM_BUILD_ROOT%{_libdir}/%{_name}/share/realplay
 install share/default/* $RPM_BUILD_ROOT%{_libdir}/%{_name}/share/default
 install share/*.html $RPM_BUILD_ROOT%{_libdir}/%{_name}/share
 install share/*.css $RPM_BUILD_ROOT%{_libdir}/%{_name}/share
+rm -rf docs
+install -d docs
+ln -s %{_libdir}/%{_name}/README docs
+ln -s %{_libdir}/%{_name}/LICENSE docs
 
 %{__sed} -i -e 's&#[ \t]*HELIX_LIBS[ \t]*=.*$&HELIX_LIBS=%{_libdir}/%{_name} ; export HELIX_LIBS&' \
 	$RPM_BUILD_ROOT%{_libdir}/realplay/realplay
@@ -194,7 +228,7 @@ umask 022
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc LICENSE README 
+%doc docs/{LICENSE,README}
 %attr(755,root,root) %{_bindir}/realplay
 %dir %{_libdir}/%{_name}
 %dir %{_libdir}/%{_name}/codecs
@@ -207,9 +241,9 @@ umask 022
 %attr(755,root,root) %{_libdir}/%{_name}/plugins/*.so*
 %attr(755,root,root) %{_libdir}/%{_name}/realplay
 %attr(755,root,root) %{_libdir}/%{_name}/realplay.bin
-
 %{_libdir}/%{_name}/share
-
+%{_libdir}/%{_name}/LICENSE
+%{_libdir}/%{_name}/README
 %{_iconsdir}/hicolor/*/*/*.png
 %{_desktopdir}/*.desktop
 
