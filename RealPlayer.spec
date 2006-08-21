@@ -1,7 +1,9 @@
 # TODO:
 #	- add the licence agreement mechanism
 #	- check if this works in opera/konqueror
-#   - check if realplayer-desktop.patch (from realplayer.spec) is needed
+# NOTE: there are partial sources available
+# (https://helixcommunity.org/frs/download.php/2153/realplay-10.0.8-source.tar.bz2)
+# but included binary blobs are only for x86
 #
 # Conditional build:
 %bcond_without	autodeps	# don't BR packages needed only for resolving deps
@@ -11,7 +13,7 @@ Summary:	RealPlayer - RealAudio and RealVideo player
 Summary(pl):	RealPlayer - odtwarzacz RealAudio i RealVideo
 Name:		RealPlayer
 %ifarch	%{ix86}
-%define		minor_ver	7
+%define		minor_ver	8
 %else
 %define		minor_ver	5
 %endif
@@ -21,12 +23,12 @@ License:	Helix DNA Technology Binary Research Use License (not distributable, se
 Group:		X11/Applications/Multimedia
 # download from https://helixcommunity.org/project/showfiles.php?group_id=154
 %ifarch %{ix86}
-Source0:	https://helixcommunity.org/download.php/1917/%{name}-%{version}.785-20060201.i586.rpm
-# NoSource0-md5:	3de2e377fd6f00ea1de8f3016469fe5e
+Source0:	https://helixcommunity.org/frs/download.php/2151/realplay-%{version}.805-linux-2.2-libc6-gcc32-i586.bin
+# NoSource0-md5:	d28b31261059231a3e93c7466f8153e6
 NoSource:	0
 %endif
 %ifarch ppc
-Source1:	https://helixcommunity.org/download.php/1346/realplay-%{version}.756-linux-2.2-libc6-gcc32-powerpc.bin
+Source1:	https://helixcommunity.org/frs/download.php/1346/realplay-%{version}.756-linux-2.2-libc6-gcc32-powerpc.bin
 # NoSource1-md5:	d87d35617f07ab9435341f37229dd3ae
 NoSource:	1
 %endif
@@ -90,18 +92,18 @@ Obs³ugiwane przegl±darki: %{browsers}.
 %prep
 %setup -q -c -T
 %ifarch %{ix86}
-rpm2cpio %{SOURCE0} | cpio -dimu
-mv -f usr/local/RealPlayer/* .
+dd if=%{SOURCE0} bs=1 skip=143273 | tar xjf -
 %endif
 %ifarch ppc
 dd if=%{SOURCE1} bs=1 skip=158895 | tar xjf -
 %endif
+%patch0 -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_desktopdir} \
 	$RPM_BUILD_ROOT%{_plugindir} \
-	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{_name},%{_datadir}/locale} \
+	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{_name}} \
 	$RPM_BUILD_ROOT%{_iconsdir}/hicolor/{48x48,128x128}/mimetypes \
 	$RPM_BUILD_ROOT%{_iconsdir}/hicolor/{16x16,32x32,48x48,128x128}/apps
 
@@ -141,15 +143,14 @@ install realplay_48x48.png $RPM_BUILD_ROOT%{_iconsdir}/hicolor/48x48/apps/realpl
 install realplay_192x192.png $RPM_BUILD_ROOT%{_iconsdir}/hicolor/128x128/apps/realplay.png
 cd -
 
-cp -rf share/locale/* $RPM_BUILD_ROOT%{_datadir}/locale
-# from realplayer.spec - does it work???
-#cd share/locale
-#for LC in *; do
-#	install -d $RPM_BUILD_ROOT%{_datadir}/locale/${LC}/LC_MESSAGES
-#	cp -a ${LC}/player.mo $RPM_BUILD_ROOT%{_datadir}/locale/${LC}/LC_MESSAGES/realplay.mo
-#	cp -a ${LC}/widget.mo $RPM_BUILD_ROOT%{_datadir}/locale/${LC}/LC_MESSAGES/libgtkhx.mo
-#done
-#cd ../..
+# install locales in proper domains
+cd share/locale
+for LC in *; do
+	install -d $RPM_BUILD_ROOT%{_datadir}/locale/${LC}/LC_MESSAGES
+	cp -a ${LC}/player.mo $RPM_BUILD_ROOT%{_datadir}/locale/${LC}/LC_MESSAGES/realplay.mo
+	cp -a ${LC}/widget.mo $RPM_BUILD_ROOT%{_datadir}/locale/${LC}/LC_MESSAGES/libgtkhx.mo
+done
+cd ../..
 
 install mozilla/*.{so,xpt} $RPM_BUILD_ROOT%{_plugindir}
 
@@ -164,6 +165,7 @@ install share/realplay/* $RPM_BUILD_ROOT%{_libdir}/%{_name}/share/realplay
 install share/default/* $RPM_BUILD_ROOT%{_libdir}/%{_name}/share/default
 install share/*.html $RPM_BUILD_ROOT%{_libdir}/%{_name}/share
 install share/*.css $RPM_BUILD_ROOT%{_libdir}/%{_name}/share
+cp -a README LICENSE $RPM_BUILD_ROOT%{_libdir}/%{_name}
 rm -rf docs
 install -d docs
 ln -s %{_libdir}/%{_name}/README docs
@@ -172,7 +174,7 @@ ln -s %{_libdir}/%{_name}/LICENSE docs
 %{__sed} -i -e 's&#[ \t]*HELIX_LIBS[ \t]*=.*$&HELIX_LIBS=%{_libdir}/%{_name} ; export HELIX_LIBS&' \
 	$RPM_BUILD_ROOT%{_libdir}/realplay/realplay
 
-# "player" and "widget" domains
+# "realplay" and "libgtkhx" domains
 %find_lang %{name} --all-name
 
 %clean
