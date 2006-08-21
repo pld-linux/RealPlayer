@@ -45,6 +45,7 @@ BuildRequires:	libgcc
 BuildRequires:	libstdc++
 BuildRequires:	pango
 %endif
+Requires(post,postun):	hicolor-icon-theme
 Requires:	sed >= 4.0
 Provides:	helix-core
 Obsoletes:	G2player
