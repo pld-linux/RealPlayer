@@ -10,7 +10,7 @@
 #
 %define		_name	realplay
 Summary:	RealPlayer - RealAudio and RealVideo player
-Summary(pl.UTF-8):   RealPlayer - odtwarzacz RealAudio i RealVideo
+Summary(pl.UTF-8):	RealPlayer - odtwarzacz RealAudio i RealVideo
 Name:		RealPlayer
 %ifarch	%{ix86}
 %define		minor_ver	8
@@ -75,7 +75,7 @@ UWAGA: ten pakiet jest niebezpieczny - szczegóły w CVE-2006-0323!
 
 %package -n browser-plugin-%{name}
 Summary:	RealPlayer plugin for WWW browsers
-Summary(pl.UTF-8):   Wtyczka RealPlayer do przeglądarek WWW
+Summary(pl.UTF-8):	Wtyczka RealPlayer do przeglądarek WWW
 Group:		X11/Applications/Multimedia
 Requires:	%{name} = %{version}-%{release}
 Requires:	browser-plugins(%{_target_base_arch})
