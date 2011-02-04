@@ -1,0 +1,5 @@
+- a proper mozilla plugin
+- but "LoadPlugin: failed to initialize shared library
+  /usr/X11R6/lib/mozilla/plugins/rpnp.so
+  [/usr/X11R6/lib/mozilla/plugins/rpnp.so: undefined symbol:
+  __pure_virtual]"
