@@ -1,0 +1,2 @@
+- %{_docdir}/%{name}-%{version} is linked to {_libdir}/%{name}/Help.
+  So options in help menu work while You have netscape installed.
