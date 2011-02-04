@@ -18,7 +18,7 @@ Name:		RealPlayer
 %define		minor_ver	5
 %endif
 Version:	10.0.%{minor_ver}
-Release:	1
+Release:	2
 License:	Helix DNA Technology Binary Research Use License (not distributable, see LICENSE)
 Group:		X11/Applications/Multimedia
 # download from https://helixcommunity.org/project/showfiles.php?group_id=154
@@ -34,7 +34,6 @@ NoSource:	1
 %endif
 Patch0:		realplayer-desktop.patch
 URL:		http://www.real.com/linux/
-BuildRequires:	cpio
 BuildRequires:	rpmbuild(macros) >= 1.312
 BuildRequires:	sed >= 4.0
 %if %{with autodeps}
@@ -45,6 +44,7 @@ BuildRequires:	libgcc
 BuildRequires:	libstdc++
 BuildRequires:	pango
 %endif
+Requires(post,postun):	gtk-update-icon-cache
 Requires(post,postun):	hicolor-icon-theme
 Requires:	sed >= 4.0
 Provides:	helix-core
@@ -132,7 +132,7 @@ mime-video-rv \
 mime-video-swf"
 
 cd share/icons
-for i in $icons; 
+for i in $icons;
 do
 install ${i}_48x48.png $RPM_BUILD_ROOT%{_iconsdir}/hicolor/48x48/mimetypes/${i}.png
 # SIC! there is no 192 size defined in hicolor, therefore use 128
